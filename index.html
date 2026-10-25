@@ -120,7 +120,9 @@
   .semana-dia.hoy { color: var(--texto); font-weight: 600; }
   .semana-dia.hoy .semana-barra { opacity: 1; }
 
-  .agenda-zona { margin-top: 18px; flex: 1; min-height: 0; overflow: hidden; }
+  .agenda-zona { margin-top: 18px; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  #destacado { flex-shrink: 0; }
+  #agenda { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; margin-right: -12px; padding-right: 12px; padding-bottom: 10px; }
   .destacado { display: flex; align-items: center; background: var(--tarjeta); border-radius: 16px; padding: 12px 14px; margin-bottom: 14px; }
   .destacado-icono { width: 44px; height: 44px; border-radius: 12px; background: var(--fondo); display: flex; align-items: center; justify-content: center; margin-right: 12px; flex-shrink: 0; }
   .destacado-icono .ico { font-size: 24px; }
@@ -158,7 +160,8 @@
   .animo { display: flex; align-items: flex-start; font-size: 16px; color: var(--texto); margin: 10px 0 12px; }
   .animo .ico { color: var(--menta); font-size: 18px; margin: 1px 8px 0 0; }
   .animo em { font-style: normal; color: var(--texto-suave); }
-  .tfe-lista { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; margin-right: -12px; padding-right: 12px; }
+  .tfe-lista { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; margin-right: -12px; padding-right: 12px; padding-bottom: 10px; }
+  .version { flex-shrink: 0; font-size: 12px; color: var(--texto-suave); opacity: 0.7; text-align: right; padding-top: 6px; }
   .grupo { font-size: 15px; color: var(--texto-suave); margin: 14px 0 4px; }
   .grupo:first-child { margin-top: 4px; }
   .grupo.atrasadas { color: var(--rosa); }
@@ -278,6 +281,7 @@
     <div class="animo" id="animo" hidden></div>
     <div id="unico"></div>
     <div class="tfe-lista" id="tfe-lista"><p class="aviso">Cargando tareas de Notion…</p></div>
+    <div class="version">Versión del 25 de octubre</div>
   </section>
 
 </div>
@@ -385,6 +389,14 @@ function dos(n) { return n < 10 ? '0' + n : '' + n; }
 function hora(d) { return dos(d.getHours()) + ':' + dos(d.getMinutes()); }
 function capital(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 function texto(el, t) { if (el.textContent !== t) { el.textContent = t; } }
+// Repinta una zona con scroll sin devolverla arriba, y solo si algo ha cambiado
+function ponerHTML(el, html) {
+  if (el.getAttribute('data-pintado') === html) { return; }
+  var arriba = el.scrollTop;
+  el.innerHTML = html;
+  el.setAttribute('data-pintado', html);
+  el.scrollTop = arriba;
+}
 function esc(s) {
   return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
@@ -535,7 +547,12 @@ function acortar(t) {
   return t
     .replace(/^Vencimiento de /i, 'Entrega: ')
     .replace(/Inteligencia Artificial/gi, 'IA')
-    .replace(/\s*\(League Pass\)/i, '');
+    .replace(/\s*[\(\[]\s*league\s*pass\s*[\)\]]/gi, '')
+    .replace(/\s*[-–—·|:]\s*league\s*pass\b/gi, '')
+    .replace(/\bleague\s*pass\b/gi, '')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/[\s\-–—·|:]+$/, '')
+    .trim();
 }
 function normalizar(lista) {
   var r = [];
@@ -579,7 +596,7 @@ function proximoImportante(ahora) {
 function pintarAgenda() {
   var cont = $('agenda');
   var dest = $('destacado');
-  if (errorAgenda) { dest.hidden = true; cont.innerHTML = '<p class="aviso">' + errorAgenda + '</p>'; return; }
+  if (errorAgenda) { dest.hidden = true; ponerHTML(cont, '<p class="aviso">' + errorAgenda + '</p>'); return; }
   if (eventos === null) { return; }
   var ahora = new Date();
 
@@ -598,9 +615,9 @@ function pintarAgenda() {
   var html = '';
   var diaActual = '';
   var mostrados = 0;
-  for (var i = 0; i < eventos.length && mostrados < 8; i++) {
+  for (var i = 0; i < eventos.length && mostrados < 40; i++) {
     var e = eventos[i];
-    if (e === imp || e.fin <= ahora || diasEntre(ahora, e.ini) > 7) { continue; }
+    if (e === imp || e.fin <= ahora || diasEntre(ahora, e.ini) > 13) { continue; }
     var dia = nombreDia(e.ini < ahora ? ahora : e.ini, ahora);
     if (dia !== diaActual) { html += '<div class="agenda-dia">' + dia + '</div>'; diaActual = dia; }
     html += '<div class="evento"><span class="t-' + e.tipo + '">' + icono(e.tipo) + '</span>' +
@@ -608,7 +625,7 @@ function pintarAgenda() {
       '<span class="evento-titulo">' + esc(e.titulo) + '</span></div>';
     mostrados++;
   }
-  cont.innerHTML = html || '<p class="aviso">Semana libre en el calendario.</p>';
+  ponerHTML(cont, html || '<p class="aviso">Dos semanas libres en el calendario.</p>');
 }
 
 /* ---------- TFE (Notion) ---------- */
@@ -649,7 +666,7 @@ function filaTarea(t, hoy, atrasada) {
 }
 function pintarTFE() {
   var cont = $('tfe-lista');
-  if (errorTFE && !tfe) { cont.innerHTML = '<p class="aviso">' + errorTFE + '</p>'; return; }
+  if (errorTFE && !tfe) { ponerHTML(cont, '<p class="aviso">' + errorTFE + '</p>'); return; }
   if (!tfe) { return; }
   var hoy = inicioDia(new Date());
   pintarUnico();
@@ -700,10 +717,10 @@ function pintarTFE() {
   }
   if (despues.length) {
     html += '<div class="grupo">Lo siguiente</div>';
-    despues.slice(0, 4).forEach(function (t) { html += filaTarea(t, hoy, false); });
+    despues.forEach(function (t) { html += filaTarea(t, hoy, false); });
   }
   if (errorTFE) { html = '<p class="aviso">' + errorTFE + '</p>' + html; }
-  cont.innerHTML = html || '<p class="aviso">No quedan tareas pendientes en Notion.</p>';
+  ponerHTML(cont, html || '<p class="aviso">No quedan tareas pendientes en Notion.</p>');
 }
 function buscarTarea(id) {
   if (!tfe) { return null; }
