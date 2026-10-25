@@ -54,7 +54,7 @@
     background: var(--fondo);
     color: var(--texto);
     font-family: "Bricolage Grotesque", -apple-system, "Helvetica Neue", Arial, sans-serif;
-    font-size: 17px;
+    font-size: 18px;
     line-height: 1.35;
     -webkit-font-smoothing: antialiased;
     -webkit-user-select: none;
@@ -82,12 +82,12 @@
   /* ===== Columna izquierda ===== */
   .izq { padding: 26px 28px 22px 40px; display: flex; flex-direction: column; min-height: 0; }
   .hora {
-    font-weight: 800; font-size: 11vw; line-height: 0.88; letter-spacing: -0.045em;
+    font-weight: 800; font-size: 9.5vw; line-height: 0.88; letter-spacing: -0.045em;
     font-variant-numeric: tabular-nums; margin-left: -0.04em;
   }
   .subhora { display: flex; align-items: center; margin-top: 10px; color: var(--texto-suave); }
-  .fecha { font-size: 21px; }
-  .tiempo { margin-left: auto; font-size: 16px; white-space: nowrap; display: flex; align-items: center; }
+  .fecha { font-size: 22px; }
+  .tiempo { margin-left: auto; font-size: 17px; white-space: nowrap; display: flex; align-items: center; }
   .tiempo .ico { font-size: 24px; color: var(--lila); margin-right: 6px; }
   .tiempo b { color: var(--texto); font-weight: 600; font-size: 21px; margin-right: 6px; }
 
@@ -106,16 +106,16 @@
   .foco-btn.libre { color: var(--texto-suave); font-weight: 400; }
   .foco-stats { display: flex; align-items: flex-end; margin-top: 12px; }
   .objetivo { flex: 1; min-width: 0; margin-right: 16px; }
-  .objetivo-linea { display: flex; align-items: baseline; font-size: 14px; color: var(--texto-suave); }
+  .objetivo-linea { display: flex; align-items: baseline; font-size: 15px; color: var(--texto-suave); }
   .foco-hoy { flex: 1; min-width: 0; }
   .foco-hoy b { color: var(--texto); font-weight: 600; }
-  .objetivo-btn { font-size: 13px; color: var(--texto-suave); padding: 2px 0 2px 10px; white-space: nowrap; text-decoration: underline; text-decoration-color: var(--linea); }
+  .objetivo-btn { font-size: 14px; color: var(--texto-suave); padding: 2px 0 2px 10px; white-space: nowrap; text-decoration: underline; text-decoration-color: var(--linea); }
   .objetivo-barra { height: 8px; background: var(--fondo); border-radius: 4px; overflow: hidden; margin-top: 7px; }
   .objetivo-barra div { height: 100%; width: 0; background: var(--menta); border-radius: 4px; transition: width 0.6s; }
   .objetivo.cumplido .objetivo-barra div { background: var(--lila); }
   .objetivo.cumplido .foco-hoy b { color: var(--lila); }
   .semana { display: flex; align-items: flex-end; height: 34px; }
-  .semana-dia { width: 13px; margin-left: 6px; text-align: center; font-size: 11px; color: var(--texto-suave); }
+  .semana-dia { width: 13px; margin-left: 6px; text-align: center; font-size: 12px; color: var(--texto-suave); }
   .semana-barra { background: var(--menta); border-radius: 3px 3px 0 0; margin-bottom: 2px; min-height: 2px; opacity: 0.55; }
   .semana-dia.hoy { color: var(--texto); font-weight: 600; }
   .semana-dia.hoy .semana-barra { opacity: 1; }
@@ -126,15 +126,15 @@
   .destacado-icono .ico { font-size: 24px; }
   .destacado-texto { min-width: 0; }
   .destacado-cuenta { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
-  .destacado-nombre { font-size: 15px; color: var(--texto-suave); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .destacado-nombre { font-size: 16px; color: var(--texto-suave); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .destacado.pronto { background: var(--lila-pastel); }
   .destacado.entrega.pronto { background: var(--rosa); color: #fff; }
   .destacado.entrega.pronto .destacado-nombre { color: rgba(255, 255, 255, 0.85); }
-  .agenda-dia { color: var(--texto-suave); font-size: 14px; margin: 10px 0 2px; }
+  .agenda-dia { color: var(--texto-suave); font-size: 15px; margin: 10px 0 2px; }
   .agenda-dia:first-child { margin-top: 0; }
-  .evento { display: flex; align-items: center; padding: 4px 0; font-size: 16px; }
-  .evento .ico { font-size: 18px; margin-right: 10px; }
-  .evento-hora { width: 48px; flex-shrink: 0; color: var(--texto-suave); font-variant-numeric: tabular-nums; }
+  .evento { display: flex; align-items: center; padding: 4px 0; font-size: 18px; }
+  .evento .ico { font-size: 19px; margin-right: 10px; }
+  .evento-hora { width: 54px; flex-shrink: 0; color: var(--texto-suave); font-variant-numeric: tabular-nums; }
   .evento-titulo { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .t-clase { color: var(--lila); }
   .t-entrega { color: var(--rosa); }
@@ -151,26 +151,26 @@
   .tfe-titulo .ico { color: var(--lila); font-size: 30px; margin-right: 10px; }
   .tfe-dias { margin-left: auto; text-align: right; }
   .tfe-dias b { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: var(--lila); }
-  .tfe-dias span { display: block; font-size: 13px; color: var(--texto-suave); }
+  .tfe-dias span { display: block; font-size: 14px; color: var(--texto-suave); }
   .progreso { margin: 12px 0 5px; height: 10px; background: var(--tarjeta); border-radius: 5px; overflow: hidden; }
   .progreso div { height: 100%; background: var(--menta); border-radius: 5px; width: 0; transition: width 0.6s; }
-  .progreso-texto { font-size: 14px; color: var(--texto-suave); }
-  .animo { display: flex; align-items: flex-start; font-size: 15px; color: var(--texto); margin: 10px 0 12px; }
+  .progreso-texto { font-size: 15px; color: var(--texto-suave); }
+  .animo { display: flex; align-items: flex-start; font-size: 16px; color: var(--texto); margin: 10px 0 12px; }
   .animo .ico { color: var(--menta); font-size: 18px; margin: 1px 8px 0 0; }
   .animo em { font-style: normal; color: var(--texto-suave); }
   .tfe-lista { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; margin-right: -12px; padding-right: 12px; }
-  .grupo { font-size: 14px; color: var(--texto-suave); margin: 14px 0 4px; }
+  .grupo { font-size: 15px; color: var(--texto-suave); margin: 14px 0 4px; }
   .grupo:first-child { margin-top: 4px; }
   .grupo.atrasadas { color: var(--rosa); }
   .tarea { border-bottom: 1px solid var(--linea); }
   .tarea-cab { display: flex; align-items: center; width: 100%; padding: 10px 0; }
   .tarea-punto { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-right: 12px; }
-  .tarea-nombre { flex: 1; min-width: 0; font-size: 17px; }
+  .tarea-nombre { flex: 1; min-width: 0; font-size: 18px; }
   .tarea:not(.abierta) .tarea-nombre { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .tarea-meta { margin-left: 10px; font-size: 14px; color: var(--texto-suave); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .tarea-meta { margin-left: 10px; font-size: 15px; color: var(--texto-suave); white-space: nowrap; font-variant-numeric: tabular-nums; }
   .tarea.atrasada .tarea-meta { color: var(--rosa); }
   .rapida { color: var(--menta); margin-right: 6px; }
-  .tarea-detalle { padding: 0 0 14px 22px; font-size: 15px; color: var(--texto-suave); }
+  .tarea-detalle { padding: 0 0 14px 22px; font-size: 16px; color: var(--texto-suave); }
   .tarea-detalle p { margin: 0 0 6px; }
   .tarea-detalle strong { color: var(--texto); font-weight: 600; }
   .tarea-botones { display: flex; flex-wrap: wrap; margin-top: 10px; }
@@ -178,14 +178,14 @@
   .tarea-botones .confirmar { background: var(--menta); color: #fff; }
   .unico { background: var(--tarjeta); border-radius: 16px; padding: 14px 16px 10px; margin-bottom: 8px; }
   .unico.hecho { background: var(--tarjeta-menta); padding-bottom: 14px; }
-  .unico-etiqueta { font-size: 14px; color: var(--lila); display: flex; align-items: center; font-weight: 600; }
+  .unico-etiqueta { font-size: 15px; color: var(--lila); display: flex; align-items: center; font-weight: 600; }
   .unico-etiqueta .ico { font-size: 17px; margin-right: 6px; }
   .unico.hecho .unico-etiqueta { color: var(--menta); }
   .unico-nombre { font-size: 21px; font-weight: 600; line-height: 1.2; margin: 5px 0 6px; letter-spacing: -0.01em; }
   .unico.hecho .unico-nombre { text-decoration: line-through; opacity: 0.6; margin-bottom: 0; }
-  .unico-criterio { font-size: 15px; color: var(--texto-suave); }
+  .unico-criterio { font-size: 16px; color: var(--texto-suave); }
   .unico .tarea-botones button { background: var(--fondo); }
-  .unico-vacio { font-size: 15px; color: var(--texto-suave); border: 1.5px dashed var(--lila-pastel); border-radius: 16px; padding: 12px 16px; margin-bottom: 8px; display: flex; align-items: center; }
+  .unico-vacio { font-size: 16px; color: var(--texto-suave); border: 1.5px dashed var(--lila-pastel); border-radius: 16px; padding: 12px 16px; margin-bottom: 8px; display: flex; align-items: center; }
   .unico-vacio .ico { color: var(--lila); font-size: 20px; margin-right: 10px; }
   .aviso { color: var(--texto-suave); font-size: 15px; }
   .aviso code { color: var(--texto); }
@@ -306,6 +306,11 @@ var CONFIG = {
 
   // Objetivo diario de foco, en minutos (se puede cambiar tocándolo en el panel)
   objetivo: 180,
+
+  // Nombres cortos para títulos largos (el de la izquierda tal cual aparece en el calendario)
+  nombresCortos: {
+    'Gobierno, Ética y Privacidad de Datos en la Inteligencia Artificial': 'Gobierno y ética de datos en IA'
+  },
 
   // Cómo se colorea la agenda según el título del evento
   categorias: [
@@ -524,6 +529,14 @@ function categoria(e) {
   }
   return 'otro';
 }
+// Acorta los títulos largos para que quepan en una línea
+function acortar(t) {
+  if (CONFIG.nombresCortos[t]) { return CONFIG.nombresCortos[t]; }
+  return t
+    .replace(/^Vencimiento de /i, 'Entrega: ')
+    .replace(/Inteligencia Artificial/gi, 'IA')
+    .replace(/\s*\(League Pass\)/i, '');
+}
 function normalizar(lista) {
   var r = [];
   for (var i = 0; i < lista.length; i++) {
@@ -533,6 +546,7 @@ function normalizar(lista) {
     if (!e.todoElDia && fin <= ini) { fin = new Date(e.inicio + (e.duracion || 60) * 60000); }
     var ev = { titulo: e.titulo, tema: e.tema || '', ini: ini, fin: fin, todoElDia: e.todoElDia, clase: e.clase };
     ev.tipo = categoria(ev);
+    ev.titulo = acortar(ev.titulo);
     r.push(ev);
   }
   r.sort(function (a, b) { return a.ini - b.ini; });
@@ -586,7 +600,7 @@ function pintarAgenda() {
   var mostrados = 0;
   for (var i = 0; i < eventos.length && mostrados < 8; i++) {
     var e = eventos[i];
-    if (e.fin <= ahora || diasEntre(ahora, e.ini) > 7) { continue; }
+    if (e === imp || e.fin <= ahora || diasEntre(ahora, e.ini) > 7) { continue; }
     var dia = nombreDia(e.ini < ahora ? ahora : e.ini, ahora);
     if (dia !== diaActual) { html += '<div class="agenda-dia">' + dia + '</div>'; diaActual = dia; }
     html += '<div class="evento"><span class="t-' + e.tipo + '">' + icono(e.tipo) + '</span>' +
