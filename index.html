@@ -25,6 +25,7 @@
     --rosa: #E07A97;
     --cielo: #6E9FDB;
     --melocoton: #E59A6E;
+    --ambar: #CF9426;
     --linea: rgba(47, 38, 66, 0.12);
     --foco-fondo: #E4F4EC;
     --descanso-fondo: #ECE4FA;
@@ -42,6 +43,7 @@
     --rosa: #F2A7BA;
     --cielo: #A9C7EE;
     --melocoton: #F3BD9F;
+    --ambar: #EBCB8B;
     --linea: rgba(241, 236, 248, 0.14);
     --foco-fondo: #1D2B27;
     --descanso-fondo: #2A2240;
@@ -139,6 +141,7 @@
   .t-gym { color: var(--menta); }
   .t-futbol { color: var(--cielo); }
   .t-viaje { color: var(--melocoton); }
+  .t-baloncesto { color: var(--ambar); }
   .t-otro { color: var(--texto-suave); }
 
   /* ===== Columna derecha: TFE ===== */
@@ -307,8 +310,10 @@ var CONFIG = {
   // Cómo se colorea la agenda según el título del evento
   categorias: [
     { tipo: 'entrega', patron: /vencimiento|entrega|test final|examen/i },
+    { tipo: 'clase', patron: /\bclase\b/i },
     { tipo: 'gym', patron: /m[eé]todo\s?42|gym|gimnasio|entreno/i },
-    { tipo: 'futbol', patron: /\((la liga|champions league|copa del rey)\)/i },
+    { tipo: 'futbol', patron: /(la liga|champions|copa del rey|supercopa|bar[cç]a|barcelona)/i },
+    { tipo: 'baloncesto', patron: /(cavaliers|cavs|nba)/i },
     { tipo: 'viaje', patron: /^(ave|avlo|alvia|iryo|ouigo)\b|vuelo/i }
   ]
 };
@@ -333,6 +338,7 @@ var ICONOS = {
   entrega: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 13l2 2 4-4"/>',
   gym: '<path d="M6.5 7v10M3.5 9.5v5M17.5 7v10M20.5 9.5v5M6.5 12h11"/>',
   futbol: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5l3.6 2.6-1.4 4.2H9.8l-1.4-4.2z"/><path d="M12 3v4.5M20.6 9.4l-5 .7M17.5 19.3l-3.3-5M6.5 19.3l3.3-5M3.4 9.4l5 .7"/>',
+  baloncesto: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18"/><path d="M5.6 5.6c3.4 3.4 3.4 9.4 0 12.8M18.4 5.6c-3.4 3.4-3.4 9.4 0 12.8"/>',
   viaje: '<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 10h14"/><path d="M9 21l1.5-4M15 21l-1.5-4"/><circle cx="9" cy="13.5" r=".6"/><circle cx="15" cy="13.5" r=".6"/>',
   otro: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>',
   reloj: '<circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.5 2"/><path d="M10 2.5h4M12 2.5V6M18.5 6.5l1.5-1.5"/>',
