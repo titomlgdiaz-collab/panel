@@ -29,6 +29,7 @@
     --linea: rgba(47, 38, 66, 0.12);
     --foco-fondo: #E4F4EC;
     --descanso-fondo: #ECE4FA;
+    --celda: #FBF9FE;
   }
   body.oscuro {
     --fondo: #241E33;
@@ -47,6 +48,7 @@
     --linea: rgba(241, 236, 248, 0.14);
     --foco-fondo: #1D2B27;
     --descanso-fondo: #2A2240;
+    --celda: rgba(241, 236, 248, 0.06);
   }
   [hidden] { display: none !important; }
   html, body { height: 100%; margin: 0; }
@@ -80,7 +82,9 @@
   }
 
   /* ===== Columna izquierda ===== */
-  .izq { padding: 26px 28px 22px 40px; display: flex; flex-direction: column; min-height: 0; }
+  .izq { padding: 26px 28px 22px 40px; display: flex; flex-direction: column; min-height: 0; position: relative; }
+  .boton-vista { position: absolute; top: 26px; right: 28px; display: flex; align-items: center; background: var(--tarjeta); border-radius: 12px; padding: 10px 15px; font-weight: 600; font-size: 17px; }
+  .boton-vista .ico { font-size: 21px; color: var(--lila); margin-right: 8px; }
   .hora {
     font-weight: 800; font-size: 9.5vw; line-height: 0.88; letter-spacing: -0.045em;
     font-variant-numeric: tabular-nums; margin-left: -0.04em;
@@ -223,67 +227,326 @@
   .foco-acciones button + button { margin-left: 12px; }
   .foco-acciones .principal { background: var(--texto); color: var(--fondo); }
 
+
+  /* ===== Vista de mes ===== */
+  .mes {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 15;
+    background: var(--fondo); box-sizing: border-box;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    display: flex;
+  }
+  .mes-dentro { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 18px 24px 16px 28px; position: relative; }
+  .mes-cab { display: flex; align-items: center; margin-bottom: 12px; }
+  .mes-titulo { font-size: 30px; font-weight: 800; letter-spacing: -0.025em; margin: 0 14px 0 0; }
+  .mes-flecha { width: 46px; height: 44px; border-radius: 12px; background: var(--tarjeta); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-right: 8px; }
+  .mes-estado { font-size: 15px; color: var(--texto-suave); margin-left: 8px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mes-estado.error { color: var(--rosa); }
+  .mes-btn { border-radius: 12px; padding: 10px 15px; font-weight: 600; font-size: 17px; background: var(--tarjeta); margin-left: 8px; display: flex; align-items: center; white-space: nowrap; }
+  .mes-btn .ico { font-size: 20px; margin-right: 7px; color: var(--lila); }
+  .mes-semana { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-column-gap: 5px; margin-bottom: 5px; }
+  .mes-semana div { font-size: 14px; color: var(--texto-suave); padding-left: 7px; }
+  .mes-rejilla { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-gap: 5px; }
+  .celda { background: var(--celda); border-radius: 10px; padding: 5px 7px; overflow: hidden; min-width: 0; min-height: 0; cursor: pointer; }
+  .celda.fin-semana { background: transparent; box-shadow: inset 0 0 0 1px var(--linea); }
+  .celda.fuera { opacity: 0.38; }
+  .celda.hoy { background: var(--tarjeta); }
+  .celda.elegida { box-shadow: inset 0 0 0 2px var(--lila); }
+  .celda-num { font-size: 15px; font-weight: 600; line-height: 22px; margin-bottom: 2px; }
+  .celda.hoy .celda-num span { background: var(--lila); color: var(--fondo); border-radius: 11px; padding: 2px 7px; }
+  .it { display: flex; align-items: center; font-size: 13px; line-height: 17px; height: 17px; white-space: nowrap; overflow: hidden; }
+  .it-punto { width: 7px; height: 7px; border-radius: 50%; margin-right: 4px; flex-shrink: 0; }
+  .it.it-tarea .it-punto { border-radius: 2px; }
+  .it-hora { color: var(--texto-suave); margin-right: 4px; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+  .it-texto { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .it-mas { font-size: 12px; line-height: 16px; color: var(--texto-suave); font-weight: 600; }
+  .c-clase { background: var(--lila); }
+  .c-entrega { background: var(--rosa); }
+  .c-gym { background: var(--menta); }
+  .c-futbol { background: var(--cielo); }
+  .c-viaje { background: var(--melocoton); }
+  .c-baloncesto { background: var(--ambar); }
+  .c-otro { background: var(--texto-suave); }
+
+  .mes-detalle {
+    position: absolute; top: 74px; right: 24px; bottom: 16px; width: 340px; z-index: 2;
+    background: var(--fondo); border: 1px solid var(--linea); border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(36, 30, 51, 0.18);
+    display: flex; flex-direction: column; padding: 16px 18px 6px;
+  }
+  .mes-detalle.lado-izq { right: auto; left: 28px; }
+  .detalle-cab { display: flex; align-items: flex-start; margin-bottom: 8px; }
+  .detalle-titulo { flex: 1; min-width: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+  .detalle-titulo span { display: block; font-size: 15px; font-weight: 400; color: var(--texto-suave); letter-spacing: 0; margin-top: 2px; }
+  .detalle-cerrar { width: 40px; height: 40px; border-radius: 12px; background: var(--tarjeta); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-left: 10px; flex-shrink: 0; }
+  .detalle-lista { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding-bottom: 10px; }
+  .detalle-grupo { font-size: 14px; color: var(--texto-suave); margin: 12px 0 2px; }
+  .det { display: flex; align-items: flex-start; padding: 9px 0; border-bottom: 1px solid var(--linea); }
+  .det > .ico, .det > span > .ico { font-size: 20px; margin: 1px 10px 0 0; }
+  .det-punto { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; margin: 6px 12px 0 5px; }
+  .det-texto { min-width: 0; flex: 1; }
+  .det-hora { font-size: 14px; color: var(--texto-suave); font-variant-numeric: tabular-nums; }
+  .det-titulo { font-size: 17px; line-height: 1.25; }
+  .det-extra { font-size: 14px; color: var(--texto-suave); margin-top: 2px; }
+
   @media (orientation: portrait) {
-    .panel { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
-    .hora { font-size: 19vw; }
-    .izq { padding: 26px 36px 10px; }
-    .agenda-zona { max-height: 220px; }
-    .der { border-left: 0; border-top: 1px solid var(--linea); padding: 18px 36px 10px; }
+    .mes-detalle, .mes-detalle.lado-izq { left: 24px; right: 24px; width: auto; top: auto; height: 46%; }
+    .mes-detalle.arriba { top: 74px; bottom: auto; }
     .foco-reloj { font-size: 26vw; }
   }
   @media (prefers-reduced-motion: reduce) {
     .progreso div, .objetivo-barra div { transition: none; }
   }
+
+  /* ================= Diseño por cajas (versión 3) ================= */
+  body.claro {
+    --fondo: #F6F3F9;
+    --caja-reloj: #E9E1F8;
+    --caja-agenda: #DDE9F7;
+    --caja-tfe: #DCF1E6;
+    --caja-comida: #FBE8DA;
+    --interior: rgba(255, 255, 255, 0.62);
+    --esfera: #FFFFFF;
+    --lateral: #EFEAF6;
+  }
+  body.oscuro {
+    --fondo: #211B2E;
+    --caja-reloj: #2F2745;
+    --caja-agenda: #1F2A3D;
+    --caja-tfe: #1D2E28;
+    --caja-comida: #34271F;
+    --interior: rgba(255, 255, 255, 0.07);
+    --esfera: rgba(255, 255, 255, 0.08);
+    --lateral: #1B1626;
+  }
+  .lateral {
+    position: fixed; top: 0; bottom: 0; left: 0; width: 84px; z-index: 16; box-sizing: border-box;
+    background: var(--lateral); display: flex; flex-direction: column; align-items: center;
+    padding: calc(env(safe-area-inset-top) + 18px) 0 calc(env(safe-area-inset-bottom) + 12px) env(safe-area-inset-left);
+  }
+  .nav { width: 68px; display: flex; flex-direction: column; align-items: center; border-radius: 16px; padding: 10px 0 8px; margin-bottom: 8px; color: var(--texto-suave); font-size: 12px; text-align: center; }
+  .nav .ico { font-size: 27px; margin-bottom: 4px; }
+  .nav.activo { background: var(--caja-reloj); color: var(--lila); font-weight: 600; }
+  .lateral-pie { margin-top: auto; font-size: 12px; color: var(--texto-suave); opacity: 0.7; }
+
+  .panel {
+    padding: calc(env(safe-area-inset-top) + 14px) calc(env(safe-area-inset-right) + 14px) calc(env(safe-area-inset-bottom) + 14px) 98px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-column-gap: 14px;
+  }
+  .col { display: flex; flex-direction: column; min-height: 0; min-width: 0; }
+  .caja { border-radius: 22px; padding: 16px 18px; min-height: 0; }
+  .caja + .caja { margin-top: 14px; }
+  .caja-reloj { background: var(--caja-reloj); flex-shrink: 0; }
+  .caja-agenda { background: var(--caja-agenda); flex: 1; display: flex; flex-direction: column; }
+  .caja-tfe { background: var(--caja-tfe); flex: 1; display: flex; flex-direction: column; }
+  .caja-comida { background: var(--caja-comida); flex-shrink: 0; }
+  .caja-cab { display: flex; align-items: center; font-size: 15px; font-weight: 600; color: var(--texto-suave); margin-bottom: 10px; flex-shrink: 0; }
+  .caja-cab .ico { font-size: 19px; margin-right: 7px; }
+  .caja-cab span { margin-left: auto; font-weight: 400; font-size: 13px; }
+  .caja-agenda .caja-cab .ico { color: var(--cielo); }
+  .caja-comida .caja-cab .ico { color: var(--melocoton); }
+
+  /* Reloj */
+  .reloj-fila { display: flex; align-items: center; }
+  .analogico { width: 96px; height: 96px; flex-shrink: 0; margin-right: 14px; }
+  .analogico .esfera { fill: var(--esfera); }
+  .analogico .marca { stroke: var(--texto-suave); stroke-width: 2.4; stroke-linecap: round; }
+  .analogico .marca.grande { stroke: var(--lila); stroke-width: 3.4; }
+  .analogico .aguja-h { stroke: var(--texto); stroke-width: 5.5; stroke-linecap: round; }
+  .analogico .aguja-m { stroke: var(--lila); stroke-width: 3.6; stroke-linecap: round; }
+  .analogico .centro { fill: var(--menta); }
+  .digital { min-width: 0; flex: 1; }
+  .hora { font-size: 60px; line-height: 0.9; letter-spacing: -0.04em; margin-left: -2px; }
+  .fecha { font-size: 16px; color: var(--texto-suave); margin-top: 5px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .semana-tfe:empty { display: none; }
+  .fase { display: flex; align-items: center; font-size: 15px; color: var(--lila); font-weight: 600; margin-top: 6px; }
+  .fase .ico { font-size: 20px; margin-right: 6px; }
+  .tiempo { display: block; margin-left: 12px; text-align: right; font-size: 14px; color: var(--texto-suave); white-space: nowrap; flex-shrink: 0; }
+  .tiempo-ahora { display: flex; align-items: center; justify-content: flex-end; }
+  .tiempo-ahora .ico { font-size: 34px; color: var(--ambar); margin-right: 6px; }
+  .tiempo-ahora b { font-size: 34px; font-weight: 800; color: var(--texto); letter-spacing: -0.03em; margin: 0; }
+  .tiempo-hoy { margin-top: 2px; line-height: 1.3; }
+  .tiempo-manana { display: flex; align-items: center; justify-content: flex-end; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--linea); }
+  .tiempo-manana .ico { font-size: 18px; margin-right: 5px; color: var(--cielo); }
+
+  /* Foco dentro de la caja del reloj */
+  .foco-zona { margin-top: 14px; background: var(--interior); border-radius: 16px; padding: 12px 14px; }
+  .foco-btn { background: var(--interior); }
+  body.claro .foco-btn { background: #FFFFFF; }
+  .objetivo-barra { background: var(--caja-reloj); }
+
+  /* Agenda */
+  .agenda-zona { margin-top: 0; }
+  .caja-agenda .destacado { background: var(--interior); }
+  .caja-agenda .destacado.pronto { background: var(--lila-pastel); }
+  .caja-agenda .destacado.entrega.pronto { background: var(--rosa); }
+  .caja-agenda .destacado-icono { background: var(--caja-agenda); }
+
+  /* TFE */
+  .caja-tfe .tfe-titulo .ico { color: var(--menta); }
+  .caja-tfe .tfe-dias b { color: var(--menta); }
+  .progreso { height: 6px; margin: 10px 0 4px; background: var(--interior); }
+  .progreso div { background: var(--menta-pastel); }
+  .semana-tfe { background: var(--interior); border-radius: 16px; padding: 12px 14px; margin: 10px 0 4px; flex-shrink: 0; }
+  .sem-cab { display: flex; align-items: baseline; }
+  .sem-titulo { display: flex; align-items: center; font-weight: 600; font-size: 16px; color: var(--menta); align-self: center; }
+  .sem-titulo .ico { font-size: 19px; margin-right: 6px; }
+  .sem-cifra { margin-left: auto; font-size: 16px; color: var(--texto-suave); }
+  .sem-cifra b { font-size: 30px; font-weight: 800; color: var(--texto); letter-spacing: -0.03em; }
+  .sem-pct { margin-left: 10px; font-size: 16px; font-weight: 600; color: var(--menta); min-width: 42px; text-align: right; }
+  .sem-barra { height: 12px; background: var(--caja-tfe); border-radius: 6px; overflow: hidden; margin-top: 8px; }
+  .sem-barra div { height: 100%; background: var(--menta); border-radius: 6px; transition: width 0.6s; }
+  .sem-texto { font-size: 15px; color: var(--texto-suave); margin-top: 7px; }
+  .semana-tfe.completa .sem-barra div { background: var(--lila); }
+  .semana-tfe.completa .sem-titulo, .semana-tfe.completa .sem-pct { color: var(--lila); }
+  .animo { margin: 8px 0 10px; font-size: 15px; }
+  .unico { background: var(--interior); }
+  .unico.hecho { background: var(--interior); }
+  .unico .tarea-botones button { background: var(--caja-tfe); }
+  .tarea-botones button { background: var(--interior); }
+  .unico-vacio { border-color: var(--menta-pastel); }
+  .unico-vacio .ico, .unico-etiqueta { color: var(--menta); }
+
+  /* Comidas de hoy */
+  .comida-fila { display: flex; align-items: center; }
+  .comida-fila + .comida-fila { margin-top: 8px; }
+  .comida-ico { width: 34px; height: 34px; border-radius: 50%; background: var(--interior); display: flex; align-items: center; justify-content: center; margin-right: 10px; flex-shrink: 0; color: var(--melocoton); }
+  .comida-ico .ico { font-size: 18px; }
+  .comida-tipo { font-size: 13px; color: var(--texto-suave); }
+  .comida-plato { font-size: 17px; font-weight: 600; line-height: 1.2; }
+  .comida-vacia { font-size: 15px; color: var(--texto-suave); }
+
+  /* Vistas a la derecha de la barra lateral */
+  .mes { left: 84px; }
+  .mes .mes-btn[data-accion="mes-cerrar"] { display: none; }
+  .vista-comidas {
+    position: fixed; top: 0; right: 0; bottom: 0; left: 84px; z-index: 15; background: var(--fondo);
+    display: flex; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box;
+  }
+  .comidas-aviso { max-width: 460px; background: var(--caja-comida); border-radius: 24px; padding: 28px 30px; }
+  .comidas-aviso .ico { font-size: 40px; color: var(--melocoton); }
+  .comidas-aviso h2 { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin: 10px 0 8px; }
+  .comidas-aviso p { margin: 0; font-size: 17px; color: var(--texto-suave); line-height: 1.45; }
+
+  @media (orientation: portrait) {
+    .hora { font-size: 54px; }
+    .analogico { width: 84px; height: 84px; margin-right: 12px; }
+    .reloj-fila { flex-wrap: wrap; }
+    .tiempo { max-width: none; width: 100%; margin: 10px 0 0; text-align: left; display: flex; align-items: center; }
+    .tiempo-ahora { justify-content: flex-start; margin-right: 12px; }
+    .tiempo-hoy { margin: 0 12px 0 0; }
+    .tiempo-manana { border: 0; margin: 0 0 0 auto; padding: 0; }
+    .foco-btn { font-size: 16px; }
+    .semana { display: none; }
+  }
 </style>
 </head>
 <body class="dia claro">
+<nav class="lateral" id="lateral" aria-label="Vistas">
+  <button class="nav activo" data-vista="inicio"><span data-ico="casa"></span>Inicio</button>
+  <button class="nav" data-vista="calendario"><span data-ico="otro"></span>Calendario</button>
+  <button class="nav" data-vista="comidas"><span data-ico="cubiertos"></span>Comidas</button>
+  <div class="lateral-pie">v3</div>
+</nav>
+
 <div class="panel">
-  <section class="izq">
-    <div class="hora" id="hora">--:--</div>
-    <div class="subhora">
-      <span class="fecha" id="fecha"></span>
-      <span class="tiempo" id="tiempo"></span>
-    </div>
-
-    <div class="foco-zona">
-      <div class="foco-cab"><span data-ico="reloj"></span>Foco<div class="foco-tarea" id="foco-tarea" hidden></div></div>
-      <div class="foco-botones">
-        <button class="foco-btn" data-min="25">25 min</button>
-        <button class="foco-btn" data-min="50">50 min</button>
-        <button class="foco-btn" data-min="90">90 min</button>
-        <button class="foco-btn libre" data-min="0">Libre</button>
-      </div>
-      <div class="foco-stats">
-        <div class="objetivo" id="objetivo">
-          <div class="objetivo-linea">
-            <span class="foco-hoy" id="foco-hoy"></span>
-            <button class="objetivo-btn" id="objetivo-btn"></button>
-          </div>
-          <div class="objetivo-barra"><div id="objetivo-relleno"></div></div>
+  <section class="col">
+    <div class="caja caja-reloj">
+      <div class="reloj-fila">
+        <svg class="analogico" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="esfera" cx="50" cy="50" r="47"/>
+          <line class="marca grande" x1="50" y1="9" x2="50" y2="16" transform="rotate(0 50 50)"/><line class="marca" x1="50" y1="9" x2="50" y2="13" transform="rotate(30 50 50)"/><line class="marca" x1="50" y1="9" x2="50" y2="13" transform="rotate(60 50 50)"/><line class="marca grande" x1="50" y1="9" x2="50" y2="16" transform="rotate(90 50 50)"/><line class="marca" x1="50" y1="9" x2="50" y2="13" transform="rotate(120 50 50)"/><line class="marca" x1="50" y1="9" x2="50" y2="13" transform="rotate(150 50 50)"/><line class="marca grande" x1="50" y1="9" x2="50" y2="16" transform="rotate(180 50 50)"/><line class="marca" x1="50" y1="9" x2="50" y2="13" transform="rotate(210 50 50)"/><line class="marca" x1="50" y1="9" x2="50" y2="13" transform="rotate(240 50 50)"/><line class="marca grande" x1="50" y1="9" x2="50" y2="16" transform="rotate(270 50 50)"/><line class="marca" x1="50" y1="9" x2="50" y2="13" transform="rotate(300 50 50)"/><line class="marca" x1="50" y1="9" x2="50" y2="13" transform="rotate(330 50 50)"/>
+          <line class="aguja-h" id="aguja-h" x1="50" y1="50" x2="50" y2="28"/>
+          <line class="aguja-m" id="aguja-m" x1="50" y1="50" x2="50" y2="17"/>
+          <circle class="centro" cx="50" cy="50" r="4"/>
+        </svg>
+        <div class="digital">
+          <div class="hora" id="hora">--:--</div>
+          <div class="fase" id="fase"></div>
+          <span class="fecha" id="fecha"></span>
         </div>
-        <div class="semana" id="semana"></div>
+        <div class="tiempo" id="tiempo"></div>
+      </div>
+
+      <div class="foco-zona">
+        <div class="foco-cab"><span data-ico="reloj"></span>Foco<div class="foco-tarea" id="foco-tarea" hidden></div></div>
+        <div class="foco-botones">
+          <button class="foco-btn" data-min="25">25 min</button>
+          <button class="foco-btn" data-min="50">50 min</button>
+          <button class="foco-btn" data-min="90">90 min</button>
+          <button class="foco-btn libre" data-min="0">Libre</button>
+        </div>
+        <div class="foco-stats">
+          <div class="objetivo" id="objetivo">
+            <div class="objetivo-linea">
+              <span class="foco-hoy" id="foco-hoy"></span>
+              <button class="objetivo-btn" id="objetivo-btn"></button>
+            </div>
+            <div class="objetivo-barra"><div id="objetivo-relleno"></div></div>
+          </div>
+          <div class="semana" id="semana"></div>
+        </div>
       </div>
     </div>
 
-    <div class="agenda-zona">
-      <div class="destacado" id="destacado" hidden></div>
-      <div id="agenda"><p class="aviso">Cargando tu calendario…</p></div>
+    <div class="caja caja-agenda">
+      <div class="caja-cab"><span data-ico="otro"></span>Agenda<span>Google Calendar</span></div>
+      <div class="agenda-zona">
+        <div class="destacado" id="destacado" hidden></div>
+        <div id="agenda"><p class="aviso">Cargando tu calendario…</p></div>
+      </div>
     </div>
   </section>
 
-  <section class="der">
-    <div class="tfe-cab">
-      <h1 class="tfe-titulo"><span data-ico="birrete"></span>TFE</h1>
-      <div class="tfe-dias" id="tfe-dias"></div>
+  <section class="col">
+    <div class="caja caja-tfe">
+      <div class="tfe-cab">
+        <h1 class="tfe-titulo"><span data-ico="birrete"></span>TFE</h1>
+        <div class="tfe-dias" id="tfe-dias"></div>
+      </div>
+      <div class="progreso"><div id="progreso"></div></div>
+      <div class="progreso-texto" id="progreso-texto"></div>
+      <div class="semana-tfe" id="semana-tfe"></div>
+      <div class="animo" id="animo" hidden></div>
+      <div id="unico"></div>
+      <div class="tfe-lista" id="tfe-lista"><p class="aviso">Cargando tareas de Notion…</p></div>
     </div>
-    <div class="progreso"><div id="progreso"></div></div>
-    <div class="progreso-texto" id="progreso-texto"></div>
-    <div class="animo" id="animo" hidden></div>
-    <div id="unico"></div>
-    <div class="tfe-lista" id="tfe-lista"><p class="aviso">Cargando tareas de Notion…</p></div>
-    <div class="version">Versión del 25 de octubre</div>
-  </section>
 
+    <div class="caja caja-comida" id="comidas-hoy">
+      <div class="caja-cab"><span data-ico="cubiertos"></span>Hoy comes</div>
+      <div class="comida-vacia">Aquí saldrán la comida y la cena de hoy cuando conectemos tu app de Menú y compra.</div>
+    </div>
+  </section>
+</div>
+
+<div class="vista-comidas" id="vista-comidas" hidden>
+  <div class="comidas-aviso">
+    <span data-ico="cubiertos"></span>
+    <h2>Comidas</h2>
+    <p>En el siguiente paso conectaremos tu app de Menú y compra. Aquí verás el menú de toda la semana y, al tocar un plato, su receta.</p>
+  </div>
+</div>
+
+<div class="mes" id="mes" hidden>
+  <div class="mes-dentro">
+    <div class="mes-cab">
+      <h2 class="mes-titulo" id="mes-titulo"></h2>
+      <button class="mes-flecha" data-accion="mes-ant" aria-label="Mes anterior">‹</button>
+      <button class="mes-flecha" data-accion="mes-sig" aria-label="Mes siguiente">›</button>
+      <div class="mes-estado" id="mes-estado"></div>
+      <button class="mes-btn" data-accion="mes-hoy">Hoy</button>
+      <button class="mes-btn" data-accion="mes-cerrar"><span data-ico="reloj"></span>Panel</button>
+    </div>
+    <div class="mes-semana"><div>Lunes</div><div>Martes</div><div>Miércoles</div><div>Jueves</div><div>Viernes</div><div>Sábado</div><div>Domingo</div></div>
+    <div class="mes-rejilla" id="mes-rejilla"></div>
+    <div class="mes-detalle" id="mes-detalle" hidden>
+      <div class="detalle-cab">
+        <div class="detalle-titulo" id="detalle-titulo"></div>
+        <button class="detalle-cerrar" data-accion="detalle-cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="detalle-lista" id="detalle-lista"></div>
+    </div>
+  </div>
 </div>
 
 <div class="foco" id="foco" hidden>
@@ -363,6 +626,11 @@ var ICONOS = {
   lluvia: '<path d="M7 15h10a4 4 0 0 0 .4-8A6 6 0 0 0 6 8.3 3.4 3.4 0 0 0 7 15z"/><path d="M8 18l-1 3M12 18l-1 3M16 18l-1 3"/>',
   tormenta: '<path d="M7 15h10a4 4 0 0 0 .4-8A6 6 0 0 0 6 8.3 3.4 3.4 0 0 0 7 15z"/><path d="M12.5 15l-2 3.5h3l-2 3.5"/>',
   niebla: '<path d="M4 9h16M3 13h18M5 17h14"/>',
+  amanecer: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0"/><path d="M12 6v3M5.6 10.6l1.6 1.6M18.4 10.6l-1.6 1.6M3 21h18"/><path d="M10 4.5l2-2 2 2"/>',
+  atardecer: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0"/><path d="M12 6v3M5.6 10.6l1.6 1.6M18.4 10.6l-1.6 1.6M3 21h18"/><path d="M10 7l2 2 2-2"/>',
+  casa: '<path d="M4 11l8-7 8 7v8.5a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19.5z"/>',
+  cubiertos: '<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10"/><path d="M17 21V3c-2 1.5-3 4-3 7 0 1.7.9 2.5 3 2.5"/>',
+  diana: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
   nieve: '<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/>'
 };
 function icono(nombre) {
@@ -474,12 +742,24 @@ function tick() {
   ultimoMinuto = a.getMinutes();
   texto($('hora'), hora(a));
   texto($('fecha'), capital(DIAS[a.getDay()]) + ', ' + a.getDate() + ' de ' + MESES[a.getMonth()]);
+  var minutos = a.getMinutes();
+  $('aguja-h').setAttribute('transform', 'rotate(' + ((a.getHours() % 12) * 30 + minutos * 0.5) + ' 50 50)');
+  $('aguja-m').setAttribute('transform', 'rotate(' + (minutos * 6) + ' 50 50)');
   var f = fase(a.getHours());
+  var ICONO_FASE = { manana: 'amanecer', dia: 'sol', tarde: 'atardecer', noche: 'luna' };
+  var SALUDO = { manana: 'Buenos días', dia: 'Buenas tardes', tarde: 'Buenas tardes', noche: 'Buenas noches' };
+  if (a.getHours() >= 14 && a.getHours() < 21) { SALUDO.dia = 'Buenas tardes'; } else { SALUDO.dia = 'Buenos días'; }
+  var fi = $('fase');
+  if (fi.getAttribute('data-f') !== f + SALUDO[f]) {
+    fi.innerHTML = icono(ICONO_FASE[f]) + '<span>' + SALUDO[f] + '</span>';
+    fi.setAttribute('data-f', f + SALUDO[f]);
+  }
   var clase = f + (f === 'manana' || f === 'dia' ? ' claro' : ' oscuro');
   if (document.body.className !== clase) { document.body.className = clase; }
   pintarAgenda();
   pintarTFE();
   pintarEstadisticas();
+  if (vistaMes) { pintarMes(); }
   if (a.getHours() === 4 && Date.now() - cargadoEn > 3600000 && !foco) { location.reload(); }
 }
 
@@ -496,15 +776,18 @@ function infoTiempo(c, esDia) {
 }
 function cargarTiempo() {
   var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + CONFIG.lat + '&longitude=' + CONFIG.lon +
-    '&current=temperature_2m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max' +
-    '&timezone=Europe%2FMadrid&forecast_days=1';
+    '&current=temperature_2m,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max' +
+    '&timezone=Europe%2FMadrid&forecast_days=2';
   pedirJSON(url, function (err, d) {
     if (err || !d.current) { return; }
     var info = infoTiempo(d.current.weather_code, d.current.is_day === 1);
     var lluvia = d.daily.precipitation_probability_max[0];
-    $('tiempo').innerHTML = icono(info.i) + '<b>' + Math.round(d.current.temperature_2m) + '°</b>' +
-      Math.round(d.daily.temperature_2m_max[0]) + '° / ' + Math.round(d.daily.temperature_2m_min[0]) + '°' +
-      (lluvia >= 30 ? ', lluvia ' + lluvia + '%' : '');
+    var man = infoTiempo(d.daily.weather_code[1], true);
+    $('tiempo').innerHTML =
+      '<div class="tiempo-ahora">' + icono(info.i) + '<b>' + Math.round(d.current.temperature_2m) + '°</b></div>' +
+      '<div class="tiempo-hoy">' + Math.round(d.daily.temperature_2m_min[0]) + '° / ' + Math.round(d.daily.temperature_2m_max[0]) + '°' +
+      (lluvia >= 30 ? ', lluvia ' + lluvia + '%' : '') + '</div>' +
+      '<div class="tiempo-manana">' + icono(man.i) + '<span>Mañana ' + Math.round(d.daily.temperature_2m_min[1]) + '° / ' + Math.round(d.daily.temperature_2m_max[1]) + '°</span></div>';
   });
 }
 
@@ -532,6 +815,7 @@ function cargarDatos() {
     }
     pintarAgenda();
     pintarTFE();
+    if (vistaMes) { pintarMes(); }
   });
 }
 function categoria(e) {
@@ -685,7 +969,8 @@ function pintarTFE() {
   }
   var hechas = tfe.hechas + nHechasLocal;
   $('progreso').style.width = (tfe.total ? Math.round(hechas * 100 / tfe.total) : 0) + '%';
-  texto($('progreso-texto'), hechas + ' de ' + tfe.total + ' tareas hechas');
+  texto($('progreso-texto'), hechas + ' de ' + tfe.total + ' tareas hechas en total');
+  pintarSemana();
   pintarAnimo(hechas, dep ? diasEntre(hoy, dep) : null);
 
   // Domingo de esta semana
@@ -785,14 +1070,48 @@ var FRASES = [
   'Si te atascas, cambia de tarea, no de actividad.',
   'Tu yo de diciembre te lo va a agradecer.'
 ];
+// Tareas que vencen de lunes a domingo: cuántas hay y cuántas están hechas
+function rangoSemana() {
+  var hoy = inicioDia(new Date());
+  var lunes = sumarDias(hoy, -((hoy.getDay() + 6) % 7));
+  return { desde: claveDia(lunes), hasta: claveDia(sumarDias(lunes, 6)) };
+}
+function progresoSemana() {
+  if (!tfe || tfe.semanaTotal === undefined) { return null; }
+  var r = rangoSemana();
+  var extra = 0;
+  tfe.tareas.forEach(function (t) {
+    var f = t.fecha ? t.fecha.slice(0, 10) : '';
+    if (hechasLocal[t.id] && f >= r.desde && f <= r.hasta) { extra++; }
+  });
+  return { hechas: tfe.semanaHechas + extra, total: tfe.semanaTotal };
+}
+function pintarSemana() {
+  var el = $('semana-tfe');
+  var p = progresoSemana();
+  if (!p) {
+    ponerHTML(el, '<div class="sem-texto">Actualiza el script de Google para ver el progreso de la semana.</div>');
+    return;
+  }
+  var pct = p.total ? Math.round(p.hechas * 100 / p.total) : 0;
+  var quedan = p.total - p.hechas;
+  var msg;
+  if (!p.total) { msg = 'Esta semana no vence ninguna tarea. Buen momento para adelantar.'; }
+  else if (quedan <= 0) { msg = '¡Semana completada! Lo que hagas ahora es adelanto.'; }
+  else if (p.hechas === 0) { msg = 'Vencen ' + p.total + (p.total === 1 ? ' tarea' : ' tareas') + ' hasta el domingo. A por la primera.'; }
+  else { msg = (quedan === 1 ? 'Te queda 1 para cerrar la semana.' : 'Te quedan ' + quedan + ' para cerrar la semana.'); }
+  el.className = 'semana-tfe' + (p.total && quedan <= 0 ? ' completa' : '');
+  ponerHTML(el,
+    '<div class="sem-cab"><span class="sem-titulo">' + icono('diana') + 'Esta semana</span>' +
+    '<span class="sem-cifra"><b>' + p.hechas + '</b> de ' + p.total + '</span><span class="sem-pct">' + (p.total ? pct + '%' : '') + '</span></div>' +
+    '<div class="sem-barra"><div style="width:' + (p.total ? pct : 0) + '%"></div></div>' +
+    '<div class="sem-texto">' + msg + '</div>');
+}
 function pintarAnimo(hechas, diasQuedan) {
   var el = $('animo');
-  var semana = (tfe && tfe.hechasSemana ? tfe.hechasSemana : 0);
-  for (var k in hechasLocal) { if (hechasLocal.hasOwnProperty(k)) { semana++; } }
   var pct = tfe.total ? hechas / tfe.total : 0;
   var dato = '';
-  if (semana >= 1) { dato = 'Esta semana has cerrado ' + semana + (semana === 1 ? ' tarea.' : ' tareas.'); }
-  else if (pct >= 0.75) { dato = 'Ya tienes tres cuartas partes hechas.'; }
+  if (pct >= 0.75) { dato = 'Ya tienes tres cuartas partes hechas.'; }
   else if (pct >= 0.5) { dato = 'Ya has pasado la mitad.'; }
   else if (pct >= 0.25) { dato = 'Llevas un cuarto del camino.'; }
   var hoy = new Date();
@@ -842,7 +1161,10 @@ function marcarHecha(id) {
   var un = unicoHoy();
   if (un && un.id === id) { un.hecho = true; guardar('panel-unico', un); }
   var quedan = tfe ? tfe.tareas.length - Object.keys(hechasLocal).length : 0;
-  aviso('Una menos. Quedan ' + quedan + '.');
+  var ps = progresoSemana();
+  if (ps && ps.total && ps.hechas === ps.total) { aviso('¡Semana completada! ' + ps.hechas + ' de ' + ps.total + '.'); }
+  else if (ps && ps.total && ps.hechas < ps.total) { aviso('Una menos. Esta semana llevas ' + ps.hechas + ' de ' + ps.total + '.'); }
+  else { aviso('Una menos. Quedan ' + quedan + '.'); }
   var ft = leer('panel-foco-tarea', null);
   if (ft && ft.id === id) { guardar('panel-foco-tarea', null); pintarTareaFoco(); }
   pintarTFE();
@@ -1117,6 +1439,248 @@ for (var bi = 0; bi < botonesFoco.length; bi++) {
     empezarFoco(+this.getAttribute('data-min'), false);
   });
 }
+
+/* ---------- Vista de mes ---------- */
+var vistaMes = null;        // { anio, mes }
+var cacheMes = {};          // 'aaaa-m' -> { eventos, t }
+var cargandoMes = {};
+var errorMes = '';
+var diaElegido = null;      // 'aaaa-mm-dd'
+var temporizadorMes = null;
+var DIAS_SEMANA_LUNES = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+
+function claveMes(v) { return v.anio + '-' + v.mes; }
+function inicioRejilla(anio, mes) {
+  var d = new Date(anio, mes, 1);
+  d.setDate(1 - ((d.getDay() + 6) % 7));
+  return d;
+}
+function semanasMes(anio, mes) {
+  var ini = inicioRejilla(anio, mes);
+  var ultimo = new Date(anio, mes + 1, 0);
+  return Math.ceil((diasEntre(ini, ultimo) + 1) / 7);
+}
+function sumarDias(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+
+function abrirMes() {
+  var h = new Date();
+  vistaMes = { anio: h.getFullYear(), mes: h.getMonth() };
+  diaElegido = null;
+  $('mes').hidden = false;
+  $('mes-detalle').hidden = true;
+  cargarMes(false);
+  pintarMes();
+  avivarMes();
+}
+function cerrarMes() {
+  clearTimeout(temporizadorMes);
+  vistaMes = null;
+  diaElegido = null;
+  $('mes').hidden = true;
+}
+// Si no tocas nada en 10 minutos, vuelve solo a Inicio
+function avivarMes() {
+  clearTimeout(temporizadorMes);
+  temporizadorMes = setTimeout(function () { cambiarVista('inicio'); }, 10 * 60000);
+}
+var vistaActual = 'inicio';
+function cambiarVista(v) {
+  vistaActual = v;
+  var navs = document.querySelectorAll('.nav');
+  for (var i = 0; i < navs.length; i++) {
+    navs[i].className = 'nav' + (navs[i].getAttribute('data-vista') === v ? ' activo' : '');
+  }
+  if (v === 'calendario') { if (!vistaMes) { abrirMes(); } }
+  else if (vistaMes) { cerrarMes(); }
+  $('vista-comidas').hidden = v !== 'comidas';
+  if (v === 'inicio') { clearTimeout(temporizadorMes); } else { avivarMes(); }
+}
+function moverMes(n) {
+  var m = vistaMes.mes + n;
+  vistaMes = { anio: vistaMes.anio + Math.floor(m / 12), mes: ((m % 12) + 12) % 12 };
+  diaElegido = null;
+  $('mes-detalle').hidden = true;
+  cargarMes(false);
+  pintarMes();
+}
+function cargarMes(forzar) {
+  if (!vistaMes || !CONFIG.scriptUrl || !leerClave()) { return; }
+  var v = vistaMes;
+  var k = claveMes(v);
+  var c = cacheMes[k];
+  if (cargandoMes[k]) { return; }
+  if (c && !forzar && Date.now() - c.t < 5 * 60000) { return; }
+  cargandoMes[k] = true;
+  var ini = inicioRejilla(v.anio, v.mes);
+  var fin = sumarDias(ini, semanasMes(v.anio, v.mes) * 7);
+  llamarScript({ accion: 'mes', desde: ini.getTime(), hasta: fin.getTime() }, function (err, d) {
+    cargandoMes[k] = false;
+    if (err) { errorMes = 'No se pudo leer el calendario. Toca «Hoy» para reintentar.'; }
+    else if (d.error === 'clave') { errorMes = 'La clave no coincide con la del script.'; }
+    else if (!d.mes) { errorMes = 'Falta actualizar el script de Google para ver meses enteros.'; }
+    else if (d.eventos && d.eventos.error) { errorMes = 'Calendario: ' + d.eventos.error; }
+    else { errorMes = ''; cacheMes[k] = { eventos: normalizar(d.eventos || []), t: Date.now() }; }
+    if (vistaMes && claveMes(vistaMes) === k) { pintarMes(); }
+  });
+}
+// Reparte eventos y tareas pendientes por día
+function mapaMes(ini, nDias, eventosMes) {
+  var mapa = {};
+  var fin = sumarDias(ini, nDias);
+  var i, k;
+  for (i = 0; i < nDias; i++) { mapa[claveDia(sumarDias(ini, i))] = { ev: [], tareas: [] }; }
+  (eventosMes || []).forEach(function (e) {
+    if (e.todoElDia) {
+      var d = inicioDia(e.ini < ini ? ini : e.ini);
+      while (d < e.fin && d < fin) {
+        k = claveDia(d);
+        if (mapa[k]) { mapa[k].ev.push(e); }
+        d = sumarDias(d, 1);
+      }
+    } else {
+      k = claveDia(e.ini);
+      if (mapa[k]) { mapa[k].ev.push(e); }
+    }
+  });
+  if (tfe) {
+    tfe.tareas.forEach(function (t) {
+      if (!t.fecha || hechasLocal[t.id]) { return; }
+      k = claveDia(leerFecha(t.fecha));
+      if (mapa[k]) { mapa[k].tareas.push(t); }
+    });
+  }
+  for (k in mapa) {
+    if (mapa.hasOwnProperty(k)) {
+      mapa[k].ev.sort(function (a, b) {
+        if (a.todoElDia !== b.todoElDia) { return a.todoElDia ? -1 : 1; }
+        return a.ini - b.ini;
+      });
+    }
+  }
+  return mapa;
+}
+function datosVisibles() {
+  var v = vistaMes;
+  var ini = inicioRejilla(v.anio, v.mes);
+  var n = semanasMes(v.anio, v.mes);
+  var c = cacheMes[claveMes(v)];
+  return { ini: ini, semanas: n, cargado: !!c, mapa: mapaMes(ini, n * 7, c ? c.eventos : []) };
+}
+function pintarMes() {
+  if (!vistaMes) { return; }
+  var v = vistaMes;
+  var datos = datosVisibles();
+  var rejilla = $('mes-rejilla');
+  texto($('mes-titulo'), capital(MESES[v.mes]) + ' ' + v.anio);
+
+  var est = $('mes-estado');
+  var cargando = cargandoMes[claveMes(v)];
+  est.className = 'mes-estado' + (errorMes ? ' error' : '');
+  texto(est, errorMes || (cargando && !datos.cargado ? 'Cargando calendario…' : ''));
+
+  rejilla.style.gridTemplateRows = 'repeat(' + datos.semanas + ', minmax(0, 1fr))';
+  var alto = rejilla.clientHeight || 600;
+  var altoCelda = (alto - 5 * (datos.semanas - 1)) / datos.semanas;
+  var caben = Math.max(1, Math.floor((altoCelda - 34) / 17));
+
+  var hoyK = claveDia(new Date());
+  var html = '';
+  for (var i = 0; i < datos.semanas * 7; i++) {
+    var d = sumarDias(datos.ini, i);
+    var k = claveDia(d);
+    var dia = datos.mapa[k];
+    var cls = 'celda' + (d.getMonth() !== v.mes ? ' fuera' : '') + (k === hoyK ? ' hoy' : '') +
+      (k === diaElegido ? ' elegida' : '') + (i % 7 >= 5 ? ' fin-semana' : '');
+    var items = [];
+    dia.ev.forEach(function (e) {
+      items.push('<div class="it"><span class="it-punto c-' + e.tipo + '"></span>' +
+        (e.todoElDia ? '' : '<span class="it-hora">' + hora(e.ini) + '</span>') +
+        '<span class="it-texto">' + esc(e.titulo) + '</span></div>');
+    });
+    dia.tareas.forEach(function (t) {
+      items.push('<div class="it it-tarea"><span class="it-punto" style="background:' + (COLOR_BLOQUE[t.bloque] || '#9B9A97') + '"></span>' +
+        '<span class="it-texto">' + esc(t.tarea) + '</span></div>');
+    });
+    var visibles = items;
+    var resto = '';
+    if (items.length > caben) {
+      visibles = items.slice(0, caben - 1);
+      resto = '<div class="it-mas">+' + (items.length - caben + 1) + ' más</div>';
+    }
+    html += '<div class="' + cls + '" data-accion="dia" data-dia="' + k + '">' +
+      '<div class="celda-num"><span>' + d.getDate() + '</span></div>' + visibles.join('') + resto + '</div>';
+  }
+  ponerHTML(rejilla, html);
+  if (diaElegido) { pintarDetalle(datos); }
+}
+function pintarDetalle(datos) {
+  var caja = $('mes-detalle');
+  var dia = datos.mapa[diaElegido];
+  if (!dia) { caja.hidden = true; return; }
+  // El cuadro se pone en el lado contrario al día elegido para no taparlo
+  var pos = diasEntre(datos.ini, leerFecha(diaElegido));
+  caja.className = 'mes-detalle' + (pos % 7 >= 3 ? ' lado-izq' : '') + (Math.floor(pos / 7) >= datos.semanas / 2 ? ' arriba' : '');
+  var d = leerFecha(diaElegido);
+  var n = diasEntre(new Date(), d);
+  var sub = n === 0 ? 'Hoy' : (n === 1 ? 'Mañana' : (n === -1 ? 'Ayer' : ''));
+  $('detalle-titulo').innerHTML = capital(DIAS[d.getDay()]) + ' ' + d.getDate() + ' de ' + MESES[d.getMonth()] +
+    (sub ? '<span>' + sub + '</span>' : '');
+  var html = '';
+  if (dia.ev.length) {
+    dia.ev.forEach(function (e) {
+      var horas = e.todoElDia ? 'Todo el día' : hora(e.ini) + ' a ' + hora(e.fin);
+      html += '<div class="det"><span class="t-' + e.tipo + '">' + icono(e.tipo) + '</span><div class="det-texto">' +
+        '<div class="det-hora">' + horas + '</div><div class="det-titulo">' + esc(e.titulo) + '</div>' +
+        (e.tema ? '<div class="det-extra">' + esc(e.tema) + '</div>' : '') + '</div></div>';
+    });
+  } else if (datos.cargado) {
+    html += '<p class="aviso">Nada en el calendario este día.</p>';
+  } else {
+    html += '<p class="aviso">Cargando calendario…</p>';
+  }
+  if (dia.tareas.length) {
+    html += '<div class="detalle-grupo">Tareas del TFE para este día</div>';
+    dia.tareas.forEach(function (t) {
+      html += '<div class="det"><span class="det-punto" style="background:' + (COLOR_BLOQUE[t.bloque] || '#9B9A97') + '"></span><div class="det-texto">' +
+        '<div class="det-titulo">' + esc(t.tarea) + '</div>' +
+        '<div class="det-extra">' + esc(t.bloque || '') + (t.estado === 'En curso' ? ', en curso' : '') + (t.rapida ? ', 5 min' : '') + '</div>' +
+        (t.hechaCuando ? '<div class="det-extra">Está hecha cuando: ' + esc(t.hechaCuando) + '</div>' : '') +
+        '</div></div>';
+    });
+  }
+  ponerHTML($('detalle-lista'), html);
+  caja.hidden = false;
+}
+$('lateral').addEventListener('click', function (ev) {
+  var b = ev.target.closest ? ev.target.closest('[data-vista]') : null;
+  if (b) { cambiarVista(b.getAttribute('data-vista')); }
+});
+$('vista-comidas').addEventListener('touchstart', avivarMes);
+$('mes').addEventListener('click', function (ev) {
+  avivarMes();
+  var b = ev.target.closest ? ev.target.closest('[data-accion]') : null;
+  if (!b) { return; }
+  var a = b.getAttribute('data-accion');
+  if (a === 'mes-ant') { moverMes(-1); }
+  else if (a === 'mes-sig') { moverMes(1); }
+  else if (a === 'mes-cerrar') { cambiarVista('inicio'); }
+  else if (a === 'detalle-cerrar') { diaElegido = null; $('mes-detalle').hidden = true; pintarMes(); }
+  else if (a === 'mes-hoy') {
+    var h = new Date();
+    vistaMes = { anio: h.getFullYear(), mes: h.getMonth() };
+    diaElegido = claveDia(h);
+    cargarMes(!!errorMes);
+    pintarMes();
+  }
+  else if (a === 'dia') {
+    var k = b.getAttribute('data-dia');
+    if (diaElegido === k) { diaElegido = null; $('mes-detalle').hidden = true; }
+    else { diaElegido = k; $('detalle-lista').scrollTop = 0; }
+    pintarMes();
+  }
+});
+$('mes').addEventListener('touchstart', avivarMes);
+window.addEventListener('resize', function () { if (vistaMes) { pintarMes(); } });
 
 /* ---------- Arranque ---------- */
 var marcas = document.querySelectorAll('[data-ico]');
