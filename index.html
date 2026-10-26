@@ -421,14 +421,91 @@
   .mes .mes-btn[data-accion="mes-cerrar"] { display: none; }
   .vista-comidas {
     position: fixed; top: 0; right: 0; bottom: 0; left: 84px; z-index: 15; background: var(--fondo);
-    display: flex; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box;
+    display: flex; box-sizing: border-box;
+    padding: calc(env(safe-area-inset-top) + 18px) calc(env(safe-area-inset-right) + 18px) calc(env(safe-area-inset-bottom) + 16px) 22px;
   }
+  .com-lista { width: 44%; flex-shrink: 0; display: flex; flex-direction: column; min-height: 0; margin-right: 16px; }
+  .com-titulo { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 10px; }
+  .com-dias { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding-bottom: 10px; }
+  .com-dia { font-size: 14px; color: var(--texto-suave); margin: 12px 0 4px 4px; }
+  .com-dia:first-child { margin-top: 0; }
+  .com-dia.hoy { color: var(--melocoton); font-weight: 600; }
+  .com-plato { display: flex; align-items: center; width: 100%; background: var(--caja-comida); border-radius: 14px; padding: 10px 12px; margin-bottom: 6px; box-sizing: border-box; }
+  .com-plato.vacio { background: transparent; box-shadow: inset 0 0 0 1px var(--linea); color: var(--texto-suave); }
+  .com-plato.elegido { box-shadow: inset 0 0 0 2px var(--melocoton); }
+  .com-plato .comida-ico { width: 30px; height: 30px; }
+  .com-plato-texto { min-width: 0; flex: 1; }
+  .com-plato-nombre { font-size: 17px; font-weight: 600; line-height: 1.2; }
+  .com-plato.vacio .com-plato-nombre { font-weight: 400; }
+  .com-plato-nota { font-size: 13px; color: var(--texto-suave); }
+  .com-receta { flex: 1; min-width: 0; background: var(--caja-comida); border-radius: 22px; padding: 20px 22px 8px; overflow-y: auto; overflow-x: hidden; }
+  .rec-cuando { font-size: 15px; color: var(--melocoton); font-weight: 600; }
+  .rec-nombre { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin: 4px 0 4px; }
+  .rec-nota { font-size: 15px; color: var(--texto-suave); }
+  .rec-sec { font-size: 15px; font-weight: 600; color: var(--texto-suave); margin: 18px 0 6px; display: flex; align-items: center; }
+  .rec-sec .ico { font-size: 18px; margin-right: 6px; color: var(--melocoton); }
+  .rec-ings { margin: 0; padding: 0; list-style: none; }
+  .rec-ings li { font-size: 17px; padding: 6px 0; border-bottom: 1px solid var(--linea); }
+  .rec-pasos { margin: 0; padding: 0 0 12px 0; list-style: none; counter-reset: paso; }
+  .rec-pasos li { counter-increment: paso; display: flex; font-size: 17px; line-height: 1.4; padding: 6px 0; }
+  .rec-pasos li::before { content: counter(paso); flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--interior); color: var(--melocoton); font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; margin: 0 10px 0 0; }
+  .rec-vacio { font-size: 16px; color: var(--texto-suave); margin-top: 14px; }
+  .caja-comida { cursor: pointer; }
+  #comidas-manana { max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .comida-nota { font-size: 13px; color: var(--texto-suave); }
   .comidas-aviso { max-width: 460px; background: var(--caja-comida); border-radius: 24px; padding: 28px 30px; }
   .comidas-aviso .ico { font-size: 40px; color: var(--melocoton); }
   .comidas-aviso h2 { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin: 10px 0 8px; }
   .comidas-aviso p { margin: 0; font-size: 17px; color: var(--texto-suave); line-height: 1.45; }
 
+  /* Vista TFE */
+  .vista-tfe {
+    position: fixed; top: 0; right: 0; bottom: 0; left: 84px; z-index: 15; background: var(--fondo);
+    display: flex; box-sizing: border-box;
+    padding: calc(env(safe-area-inset-top) + 18px) calc(env(safe-area-inset-right) + 18px) calc(env(safe-area-inset-bottom) + 16px) 22px;
+  }
+  .tv-lista { width: 50%; flex-shrink: 0; display: flex; flex-direction: column; min-height: 0; margin-right: 16px; }
+  .tv-cab { display: flex; align-items: baseline; flex-shrink: 0; }
+  .tv-cab .com-titulo { margin-bottom: 6px; }
+  .tv-resumen { margin-left: auto; font-size: 15px; color: var(--texto-suave); text-align: right; }
+  .tv-resumen b { color: var(--menta); font-size: 18px; }
+  .tv-filtros { display: flex; flex-wrap: wrap; flex-shrink: 0; margin: 4px 0 8px; }
+  .tv-chip { display: flex; align-items: center; border-radius: 999px; padding: 6px 12px; font-size: 14px; background: var(--interior); box-shadow: inset 0 0 0 1px var(--linea); margin: 0 6px 6px 0; }
+  .tv-chip i { width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; display: inline-block; }
+  .tv-chip.activo { background: var(--caja-tfe); box-shadow: inset 0 0 0 2px var(--menta); font-weight: 600; }
+  .tv-tareas { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding-bottom: 10px; }
+  .tv-grupo { font-size: 14px; color: var(--texto-suave); margin: 14px 0 4px 4px; }
+  .tv-grupo:first-child { margin-top: 2px; }
+  .tv-grupo.atrasadas { color: var(--rosa); }
+  .tv-tarea { display: flex; align-items: center; background: var(--caja-tfe); border-radius: 14px; padding: 10px 12px; margin-bottom: 6px; }
+  .tv-tarea.elegida { box-shadow: inset 0 0 0 2px var(--menta); }
+  .tv-tarea .tarea-punto { margin-right: 10px; }
+  .tv-tarea-texto { flex: 1; min-width: 0; }
+  .tv-tarea-nombre { font-size: 17px; line-height: 1.25; }
+  .tv-tarea-meta { font-size: 13px; color: var(--texto-suave); margin-top: 2px; }
+  .tv-tarea.atrasada .tv-tarea-meta { color: var(--rosa); }
+  .tv-detalle { flex: 1; min-width: 0; background: var(--caja-tfe); border-radius: 22px; padding: 20px 22px 12px; overflow-y: auto; overflow-x: hidden; }
+  .tv-bloque { display: flex; align-items: center; font-size: 15px; font-weight: 600; }
+  .tv-bloque i { width: 11px; height: 11px; border-radius: 50%; margin-right: 8px; display: inline-block; }
+  .tv-nombre { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; margin: 8px 0 8px; }
+  .tv-etiquetas { display: flex; flex-wrap: wrap; }
+  .tv-etiqueta { font-size: 14px; background: var(--interior); border-radius: 8px; padding: 4px 9px; margin: 0 6px 6px 0; color: var(--texto-suave); }
+  .tv-etiqueta.rosa { color: var(--rosa); }
+  .tv-etiqueta.menta { color: var(--menta); font-weight: 600; }
+  .tv-campo { background: var(--interior); border-radius: 14px; padding: 12px 14px; margin-top: 10px; }
+  .tv-campo-titulo { display: flex; align-items: center; font-size: 14px; font-weight: 600; color: var(--menta); margin-bottom: 4px; }
+  .tv-campo-titulo .ico { font-size: 17px; margin-right: 6px; }
+  .tv-campo-texto { font-size: 17px; line-height: 1.4; white-space: pre-wrap; word-wrap: break-word; }
+  .tv-campo-texto.vacio { color: var(--texto-suave); font-size: 15px; }
+  .tv-detalle .tarea-botones { margin-top: 16px; }
+  .tv-detalle .tarea-botones button { background: var(--interior); font-size: 16px; padding: 11px 14px; }
+  .tv-detalle .tarea-botones .confirmar { background: var(--menta); color: #fff; }
+
   @media (orientation: portrait) {
+    .vista-tfe { flex-direction: column; }
+    .tv-lista { width: auto; margin: 0 0 14px; height: 52%; flex-shrink: 0; }
+    .vista-comidas { flex-direction: column; }
+    .com-lista { width: auto; margin: 0 0 14px; height: 45%; flex-shrink: 0; }
     .hora { font-size: 54px; }
     .analogico { width: 84px; height: 84px; margin-right: 12px; }
     .reloj-fila { flex-wrap: wrap; }
@@ -444,9 +521,10 @@
 <body class="dia claro">
 <nav class="lateral" id="lateral" aria-label="Vistas">
   <button class="nav activo" data-vista="inicio"><span data-ico="casa"></span>Inicio</button>
+  <button class="nav" data-vista="tfe"><span data-ico="birrete"></span>TFE</button>
   <button class="nav" data-vista="calendario"><span data-ico="otro"></span>Calendario</button>
   <button class="nav" data-vista="comidas"><span data-ico="cubiertos"></span>Comidas</button>
-  <div class="lateral-pie">v3</div>
+  <div class="lateral-pie">v5</div>
 </nav>
 
 <div class="panel">
@@ -513,18 +591,30 @@
     </div>
 
     <div class="caja caja-comida" id="comidas-hoy">
-      <div class="caja-cab"><span data-ico="cubiertos"></span>Hoy comes</div>
-      <div class="comida-vacia">Aquí saldrán la comida y la cena de hoy cuando conectemos tu app de Menú y compra.</div>
+      <div class="caja-cab"><span data-ico="cubiertos"></span>Hoy comes<span id="comidas-manana"></span></div>
+      <div id="comidas-hoy-lista"><div class="comida-vacia">Cargando el menú…</div></div>
     </div>
   </section>
 </div>
 
-<div class="vista-comidas" id="vista-comidas" hidden>
-  <div class="comidas-aviso">
-    <span data-ico="cubiertos"></span>
-    <h2>Comidas</h2>
-    <p>En el siguiente paso conectaremos tu app de Menú y compra. Aquí verás el menú de toda la semana y, al tocar un plato, su receta.</p>
+<div class="vista-tfe" id="vista-tfe" hidden>
+  <div class="tv-lista">
+    <div class="tv-cab">
+      <h2 class="com-titulo">Tareas del TFE</h2>
+      <div class="tv-resumen" id="tv-resumen"></div>
+    </div>
+    <div class="tv-filtros" id="tv-filtros"></div>
+    <div class="tv-tareas" id="tv-tareas"><p class="aviso">Cargando tareas de Notion…</p></div>
   </div>
+  <div class="tv-detalle" id="tv-detalle"></div>
+</div>
+
+<div class="vista-comidas" id="vista-comidas" hidden>
+  <div class="com-lista">
+    <h2 class="com-titulo">Menú de la semana</h2>
+    <div class="com-dias" id="com-dias"></div>
+  </div>
+  <div class="com-receta" id="com-receta"></div>
 </div>
 
 <div class="mes" id="mes" hidden>
@@ -630,6 +720,9 @@ var ICONOS = {
   atardecer: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0"/><path d="M12 6v3M5.6 10.6l1.6 1.6M18.4 10.6l-1.6 1.6M3 21h18"/><path d="M10 7l2 2 2-2"/>',
   casa: '<path d="M4 11l8-7 8 7v8.5a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19.5z"/>',
   cubiertos: '<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10"/><path d="M17 21V3c-2 1.5-3 4-3 7 0 1.7.9 2.5 3 2.5"/>',
+  carrito: '<path d="M3 4h2l2.2 10.5a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="19.5" r="1.3"/><circle cx="17" cy="19.5" r="1.3"/>',
+  lupa: '<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>',
+  enlace: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
   diana: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
   nieve: '<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/>'
 };
@@ -650,6 +743,9 @@ var errorTFE = '';
 var tareaAbierta = null;
 var confirmando = null;
 var hechasLocal = {};
+var menu = null;
+var errorMenu = '';
+var platoElegido = null;   // 'aaaa-mm-dd|comida'
 
 /* ---------- Utilidades ---------- */
 function $(id) { return document.getElementById(id); }
@@ -759,6 +855,7 @@ function tick() {
   pintarAgenda();
   pintarTFE();
   pintarEstadisticas();
+  pintarComidas();
   if (vistaMes) { pintarMes(); }
   if (a.getHours() === 4 && Date.now() - cargadoEn > 3600000 && !foco) { location.reload(); }
 }
@@ -810,11 +907,15 @@ function cargarDatos() {
     } else {
       if (d.eventos && d.eventos.error) { errorAgenda = 'Calendario: ' + esc(d.eventos.error); }
       else if (d.eventos) { errorAgenda = ''; eventos = normalizar(d.eventos); }
+      if (d.menu === undefined) { errorMenu = 'Actualiza el script de Google para ver el menú.'; }
+      else if (d.menu && d.menu.error) { errorMenu = 'No se pudo leer la hoja del menú: ' + esc(d.menu.error); }
+      else { errorMenu = ''; menu = d.menu || []; }
       if (d.tfe && d.tfe.error) { errorTFE = 'Notion: ' + esc(d.tfe.error); }
       else if (d.tfe) { errorTFE = ''; tfe = d.tfe; hechasLocal = {}; }
     }
     pintarAgenda();
     pintarTFE();
+    pintarComidas();
     if (vistaMes) { pintarMes(); }
   });
 }
@@ -949,6 +1050,7 @@ function filaTarea(t, hoy, atrasada) {
   return h + '</div>';
 }
 function pintarTFE() {
+  if (vistaActual === 'tfe') { pintarVistaTFE(); }
   var cont = $('tfe-lista');
   if (errorTFE && !tfe) { ponerHTML(cont, '<p class="aviso">' + errorTFE + '</p>'); return; }
   if (!tfe) { return; }
@@ -1493,6 +1595,9 @@ function cambiarVista(v) {
   if (v === 'calendario') { if (!vistaMes) { abrirMes(); } }
   else if (vistaMes) { cerrarMes(); }
   $('vista-comidas').hidden = v !== 'comidas';
+  $('vista-tfe').hidden = v !== 'tfe';
+  if (v === 'tfe') { pintarVistaTFE(); }
+  if (v === 'comidas') { platoElegido = null; pintarComidas(); $('com-dias').scrollTop = 0; }
   if (v === 'inicio') { clearTimeout(temporizadorMes); } else { avivarMes(); }
 }
 function moverMes(n) {
@@ -1656,6 +1761,7 @@ $('lateral').addEventListener('click', function (ev) {
   if (b) { cambiarVista(b.getAttribute('data-vista')); }
 });
 $('vista-comidas').addEventListener('touchstart', avivarMes);
+$('vista-tfe').addEventListener('touchstart', avivarMes);
 $('mes').addEventListener('click', function (ev) {
   avivarMes();
   var b = ev.target.closest ? ev.target.closest('[data-accion]') : null;
@@ -1681,6 +1787,238 @@ $('mes').addEventListener('click', function (ev) {
 });
 $('mes').addEventListener('touchstart', avivarMes);
 window.addEventListener('resize', function () { if (vistaMes) { pintarMes(); } });
+
+
+/* ---------- Comidas (menú de la app Menú y compra) ---------- */
+function platoDe(fecha, tipo) {
+  if (!menu) { return null; }
+  for (var i = 0; i < menu.length; i++) { if (menu[i].fecha === fecha && menu[i].tipo === tipo) { return menu[i]; } }
+  return null;
+}
+function iconoTipo(tipo) { return tipo === 'cena' ? 'luna' : 'sol'; }
+function pintarComidas() {
+  var lista = $('comidas-hoy-lista');
+  var hoyK = claveDia(new Date());
+  if (!menu) {
+    ponerHTML(lista, '<div class="comida-vacia">' + (errorMenu || 'Cargando el menú…') + '</div>');
+  } else {
+    var html = '';
+    ['comida', 'cena'].forEach(function (tipo) {
+      var p = platoDe(hoyK, tipo);
+      html += '<div class="comida-fila"><span class="comida-ico">' + icono(iconoTipo(tipo)) + '</span><div>' +
+        '<div class="comida-tipo">' + capital(tipo) + (p && p.nota ? ' · ' + esc(p.nota) : '') + '</div>' +
+        '<div class="comida-plato">' + (p ? esc(p.plato) : '<span class="comida-vacia">Sin decidir</span>') + '</div></div></div>';
+    });
+    ponerHTML(lista, html);
+    var mk = claveDia(sumarDias(new Date(), 1));
+    var m1 = platoDe(mk, 'comida'), m2 = platoDe(mk, 'cena');
+    texto($('comidas-manana'), m1 || m2 ? 'Mañana: ' + (m1 ? m1.plato : m2.plato) : '');
+  }
+  if (vistaActual === 'comidas') { pintarVistaComidas(); }
+}
+// Lo próximo que toca comer: la comida hasta las 17:00, luego la cena
+function proximoPlato() {
+  var a = new Date();
+  var k = claveDia(a);
+  if (a.getHours() < 17 && platoDe(k, 'comida')) { return k + '|comida'; }
+  if (platoDe(k, 'cena')) { return k + '|cena'; }
+  for (var i = 1; i < 14; i++) {
+    var d = claveDia(sumarDias(a, i));
+    if (platoDe(d, 'comida')) { return d + '|comida'; }
+    if (platoDe(d, 'cena')) { return d + '|cena'; }
+  }
+  return null;
+}
+function pintarVistaComidas() {
+  var cont = $('com-dias');
+  var rec = $('com-receta');
+  if (!menu) {
+    ponerHTML(cont, '<p class="aviso">' + (errorMenu || 'Cargando el menú…') + '</p>');
+    ponerHTML(rec, '');
+    return;
+  }
+  if (!platoElegido) { platoElegido = proximoPlato(); }
+  var html = '';
+  var hoy = new Date();
+  for (var i = 0; i < 7; i++) {
+    var d = sumarDias(hoy, i);
+    var k = claveDia(d);
+    html += '<div class="com-dia' + (i === 0 ? ' hoy' : '') + '">' + (i === 0 ? 'Hoy, ' + DIAS[d.getDay()] + ' ' + d.getDate() : nombreDia(d, hoy)) + '</div>';
+    ['comida', 'cena'].forEach(function (tipo) {
+      var p = platoDe(k, tipo);
+      var id = k + '|' + tipo;
+      html += '<div class="com-plato' + (p ? '' : ' vacio') + (id === platoElegido ? ' elegido' : '') + '"' + (p ? ' data-plato="' + id + '"' : '') + '>' +
+        '<span class="comida-ico">' + icono(iconoTipo(tipo)) + '</span><div class="com-plato-texto">' +
+        '<div class="com-plato-nombre">' + (p ? esc(p.plato) : capital(tipo) + ' sin decidir') + '</div>' +
+        (p ? '<div class="com-plato-nota">' + capital(tipo) + (p.nota ? ' · ' + esc(p.nota) : '') + '</div>' : '') + '</div></div>';
+    });
+  }
+  ponerHTML(cont, html);
+
+  var partes = platoElegido ? platoElegido.split('|') : null;
+  var pl = partes ? platoDe(partes[0], partes[1]) : null;
+  if (!pl) {
+    ponerHTML(rec, '<p class="rec-vacio">No hay platos en el menú de estos días. Rellénalo en la app de Menú y compra y aparecerá aquí.</p>');
+    return;
+  }
+  var fd = leerFecha(pl.fecha);
+  var ings = pl.ingredientes ? pl.ingredientes.split('\n').filter(function (x) { return x.trim(); }) : [];
+  var pasos = pl.receta ? pl.receta.split('\n').filter(function (x) { return x.trim(); }) : [];
+  var r = '<div class="rec-cuando">' + capital(pl.tipo) + ' · ' + nombreDia(fd, new Date()) + '</div>' +
+    '<div class="rec-nombre">' + esc(pl.plato) + '</div>' +
+    (pl.nota ? '<div class="rec-nota">' + esc(pl.nota) + '</div>' : '');
+  if (ings.length) {
+    r += '<div class="rec-sec">' + icono('carrito') + 'Ingredientes</div><ul class="rec-ings">' +
+      ings.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+  }
+  if (pasos.length) {
+    r += '<div class="rec-sec">' + icono('cubiertos') + 'Cómo se hace</div><ol class="rec-pasos">' +
+      pasos.map(function (x) { return '<li><span>' + esc(x) + '</span></li>'; }).join('') + '</ol>';
+  }
+  if (!ings.length && !pasos.length) { r += '<p class="rec-vacio">Este plato no tiene receta todavía. Puedes pedírsela a Claude desde la app de Menú y compra.</p>'; }
+  ponerHTML(rec, r);
+}
+$('vista-comidas').addEventListener('click', function (ev) {
+  var b = ev.target.closest ? ev.target.closest('[data-plato]') : null;
+  if (!b) { return; }
+  platoElegido = b.getAttribute('data-plato');
+  pintarVistaComidas();
+  $('com-receta').scrollTop = 0;
+});
+$('comidas-hoy').addEventListener('click', function () { cambiarVista('comidas'); });
+
+
+/* ---------- Vista TFE: todas las tareas con su detalle ---------- */
+var tareaVista = null;
+var filtroBloque = '';
+function pendientesTFE() {
+  if (!tfe) { return []; }
+  return tfe.tareas.filter(function (t) { return !hechasLocal[t.id]; });
+}
+function gruposTFE(lista) {
+  var hoy = inicioDia(new Date());
+  var r = rangoSemana();
+  var g = { curso: [], atrasadas: [], semana: [], despues: [], sinFecha: [] };
+  lista.forEach(function (t) {
+    var f = t.fecha ? t.fecha.slice(0, 10) : '';
+    if (t.estado === 'En curso') { g.curso.push(t); }
+    else if (!f) { g.sinFecha.push(t); }
+    else if (leerFecha(f) < hoy) { g.atrasadas.push(t); }
+    else if (f <= r.hasta) { g.semana.push(t); }
+    else { g.despues.push(t); }
+  });
+  return g;
+}
+function metaTarea(t) {
+  var partes = [];
+  if (t.bloque) { partes.push(t.bloque); }
+  if (t.fecha) { partes.push('vence el ' + fechaCorta(leerFecha(t.fecha))); }
+  if (t.rapida) { partes.push('5 min'); }
+  return partes.join(' · ');
+}
+function pintarVistaTFE() {
+  var cont = $('tv-tareas');
+  if (!tfe) {
+    ponerHTML(cont, '<p class="aviso">' + (errorTFE || 'Cargando tareas de Notion…') + '</p>');
+    ponerHTML($('tv-detalle'), '');
+    return;
+  }
+  var todas = pendientesTFE();
+  var dep = fechaDeposito();
+  $('tv-resumen').innerHTML = '<b>' + todas.length + '</b> pendientes' +
+    (dep ? '<br>' + diasEntre(new Date(), dep) + ' días para depositar' : '');
+
+  // Filtros por bloque, en el orden de Notion
+  var cuenta = {};
+  todas.forEach(function (t) { var b = t.bloque || 'Sin bloque'; cuenta[b] = (cuenta[b] || 0) + 1; });
+  if (filtroBloque && !cuenta[filtroBloque]) { filtroBloque = ''; }
+  var chips = '<button class="tv-chip' + (filtroBloque ? '' : ' activo') + '" data-filtro="">Todas</button>';
+  var orden = Object.keys(COLOR_BLOQUE).concat(['Sin bloque']);
+  orden.forEach(function (b) {
+    if (!cuenta[b]) { return; }
+    chips += '<button class="tv-chip' + (filtroBloque === b ? ' activo' : '') + '" data-filtro="' + esc(b) + '">' +
+      '<i style="background:' + (COLOR_BLOQUE[b] || '#9B9A97') + '"></i>' + esc(b) + ' ' + cuenta[b] + '</button>';
+  });
+  ponerHTML($('tv-filtros'), chips);
+
+  var lista = todas.filter(function (t) { return !filtroBloque || (t.bloque || 'Sin bloque') === filtroBloque; });
+  var g = gruposTFE(lista);
+  var orden2 = [['curso', 'En curso'], ['atrasadas', 'Atrasadas'], ['semana', 'Esta semana'], ['despues', 'Más adelante'], ['sinFecha', 'Sin fecha']];
+  var visibles = [];
+  orden2.forEach(function (o) { visibles = visibles.concat(g[o[0]]); });
+  var existe = false;
+  visibles.forEach(function (t) { if (t.id === tareaVista) { existe = true; } });
+  if (!existe) { tareaVista = visibles.length ? visibles[0].id : null; }
+
+  var html = '';
+  orden2.forEach(function (o) {
+    if (!g[o[0]].length) { return; }
+    html += '<div class="tv-grupo' + (o[0] === 'atrasadas' ? ' atrasadas' : '') + '">' + o[1] + ' (' + g[o[0]].length + ')</div>';
+    g[o[0]].forEach(function (t) {
+      html += '<div class="tv-tarea' + (t.id === tareaVista ? ' elegida' : '') + (o[0] === 'atrasadas' ? ' atrasada' : '') + '" data-tarea="' + t.id + '">' +
+        '<span class="tarea-punto" style="background:' + (COLOR_BLOQUE[t.bloque] || '#9B9A97') + '"></span>' +
+        '<div class="tv-tarea-texto"><div class="tv-tarea-nombre">' + esc(t.tarea) + '</div>' +
+        '<div class="tv-tarea-meta">' + esc(metaTarea(t)) + '</div></div></div>';
+    });
+  });
+  ponerHTML(cont, html || '<p class="aviso">No quedan tareas pendientes' + (filtroBloque ? ' en este bloque.' : '. ¡Enhorabuena!') + '</p>');
+  pintarDetalleTFE();
+}
+function campoTFE(icon, titulo, valor, vacio) {
+  return '<div class="tv-campo"><div class="tv-campo-titulo">' + icono(icon) + titulo + '</div>' +
+    '<div class="tv-campo-texto' + (valor ? '' : ' vacio') + '">' + (valor ? esc(valor) : vacio) + '</div></div>';
+}
+function pintarDetalleTFE() {
+  var caja = $('tv-detalle');
+  var t = tareaVista ? buscarTarea(tareaVista) : null;
+  if (!t || hechasLocal[t.id]) { ponerHTML(caja, '<p class="rec-vacio">Elige una tarea de la lista para ver sus detalles.</p>'); return; }
+  var hoy = inicioDia(new Date());
+  var f = t.fecha ? leerFecha(t.fecha) : null;
+  var et = '';
+  if (f) {
+    var d = diasEntre(hoy, f);
+    var cuando = d === 0 ? 'Vence hoy' : (d === 1 ? 'Vence mañana' : (d < 0 ? 'Venció hace ' + (-d) + (d === -1 ? ' día' : ' días') : 'Vence en ' + d + ' días'));
+    et += '<span class="tv-etiqueta' + (d < 0 ? ' rosa' : '') + '">' + cuando + ', ' + fechaCorta(f) + '</span>';
+  } else { et += '<span class="tv-etiqueta">Sin fecha límite</span>'; }
+  if (t.estado) { et += '<span class="tv-etiqueta' + (t.estado === 'En curso' ? ' menta' : '') + '">' + esc(t.estado) + '</span>'; }
+  if (t.rapida) { et += '<span class="tv-etiqueta menta">Rápida, 5 min</span>'; }
+  var u = unicoHoy();
+  var esUnico = u && u.id === t.id;
+  if (esUnico) { et += '<span class="tv-etiqueta menta">Lo único de hoy</span>'; }
+  var html = '<div class="tv-bloque"><i style="background:' + (COLOR_BLOQUE[t.bloque] || '#9B9A97') + '"></i>' + esc(t.bloque || 'Sin bloque') + '</div>' +
+    '<div class="tv-nombre">' + esc(t.tarea) + '</div>' +
+    '<div class="tv-etiquetas">' + et + '</div>' +
+    campoTFE('check', 'Está hecha cuando', t.hechaCuando, 'No está escrito en Notion.') +
+    campoTFE('lupa', 'Dónde está', t.donde, 'No está escrito en Notion.') +
+    campoTFE('enlace', 'Depende de', t.depende, 'No depende de nada.') +
+    '<div class="tarea-botones">' +
+    (esUnico ? '' : '<button data-accion="unico" data-id="' + t.id + '">Lo único de hoy</button>') +
+    '<button data-accion="enfocar-ya" data-id="' + t.id + '">Empezar 50 min con esta</button>' +
+    '<button data-accion="hecha" data-id="' + t.id + '"' + (confirmando === t.id ? ' class="confirmar">Toca otra vez para confirmar' : '>Marcar como hecha') + '</button>' +
+    '</div>';
+  ponerHTML(caja, html);
+}
+$('vista-tfe').addEventListener('click', function (ev) {
+  if (!ev.target.closest) { return; }
+  var f = ev.target.closest('[data-filtro]');
+  if (f) { filtroBloque = f.getAttribute('data-filtro'); confirmando = null; pintarVistaTFE(); $('tv-tareas').scrollTop = 0; return; }
+  var t = ev.target.closest('[data-tarea]');
+  if (t) { tareaVista = t.getAttribute('data-tarea'); confirmando = null; pintarVistaTFE(); $('tv-detalle').scrollTop = 0; return; }
+  var b = ev.target.closest('[data-accion]');
+  if (!b) { return; }
+  if (b.getAttribute('data-accion') === 'enfocar-ya') {
+    var te = buscarTarea(b.getAttribute('data-id'));
+    if (te) {
+      guardar('panel-foco-tarea', { id: te.id, nombre: te.tarea, bloque: te.bloque });
+      pintarTareaFoco();
+      accionesPintadas = '';
+      empezarFoco(50, false);
+    }
+    return;
+  }
+  alTocarTFE(ev);
+  if (b.getAttribute('data-accion') === 'unico') { aviso('Fijada como lo único de hoy.'); }
+});
 
 /* ---------- Arranque ---------- */
 var marcas = document.querySelectorAll('[data-ico]');
